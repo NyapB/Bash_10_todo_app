@@ -43,6 +43,13 @@ cmd_add() {
     fi
 
     local title="$*"
+
+    # Enforce clear errors for a title containing pipe characters |
+    if [[ "$title" == *"|"* ]]; then
+        die "a title containing | is not allowed"
+    fi
+
+    local title="$*"
     local status="todo"
     local priority="medium"
     local next_id=1
