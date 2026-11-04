@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # Resolve storage file path (use $TODO_FILE if set, otherwise default path)
 STORAGE_FILE="${TODO_FILE:-$HOME/.local/share/todo/todo.txt}"
@@ -67,6 +67,13 @@ cmd_list() {
     echo "--- Raw Storage Contents ---"
     cat "$STORAGE_FILE"
 }
+#print aligned headers
+printf "%-4s %-8s %-9s %s\n" "ID" "STATUS" "PRIOTITY" "TITLE"
+
+#Read each pipe-separated line and format it cleanly
+while IFS='|' read -r id status priority title; do
+    printf "%-4s %-8s %-9s %s\n" "$id" "$status" "$priority" "$title"
+done < "$STORAGE_FILE"
 
 # Main Command Router
 if [[ $# -eq 0 ]]; then
