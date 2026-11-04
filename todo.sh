@@ -66,15 +66,63 @@ cmd_list() {
     fi
     echo "--- Raw Storage Contents ---"
     cat "$STORAGE_FILE"
-}
+
 #print aligned headers
 printf "%-4s %-8s %-9s %s\n" "ID" "STATUS" "PRIOTITY" "TITLE"
 
-#Read each pipe-separated line and format it cleanly
-while IFS='|' read -r id status priority title; do
-    printf "%-4s %-8s %-9s %s\n" "$id" "$status" "$priority" "$title"
-done < "$STORAGE_FILE"
+    #Read each pipe-separated line and format it cleanly
+    while IFS='|' read -r id status priority title; do
+        printf "%-4s %-8s %-9s %s\n" "$id" "$status" "$priority" "$title"
+    done < "$STORAGE_FILE"
+}
 
+cmd_done() {
+    init_storage
+    local target_id="$1"
+    
+    if [[ -z "$target_id" ]]; then
+        die "Missing task ID."
+    fi
+
+    # Check if ID exists in the file before trying to modify
+    if ! grep -q "^${target_id}|" "$STORAGE_FILE"; then
+        die "Unknown ID ${target_id}."
+    fi
+
+    local tmp_file="${STORAGE_FILE}.tmp"
+
+    # Use awk to map through fields and flip status to "done"
+    awk -F'|' -v id="$target_id" -v OFS='|' '
+        $1 == id { $2 = "done" } 
+        { print }
+    ' "$STORAGE_FILE" > "$tmp_file"
+    mv "$tmp_file" "$STORAGE_FILE" || die "Failed to update storage file."
+    echo "Task ${target_id} done"
+}
+
+cmd_delete() {
+    init_storage
+    local target_id="$1"
+
+    if [[ -z "$target_id" ]]; then
+        die "Missing task ID."
+    fi
+
+    # Check if ID exists in the file before trying to delete
+    if ! grep -q "^${target_id}|" "$STORAGE_FILE"; then
+        die "Unknown ID ${target_id}."
+    fi
+
+    local tmp_file="${STORAGE_FILE}.tmp"
+
+    # Filter out the matching ID line
+    awk -F'|' -v id="$target_id" '
+        $1 != id { print }
+    ' "$STORAGE_FILE" > "$tmp_file"
+
+    mv "$tmp_file" "$STORAGE_FILE" || die "Failed to update storage file."
+    echo "Task ${target_id} deleted"
+}
 # Main Command Router
 if [[ $# -eq 0 ]]; then
     cmd_list
@@ -86,6 +134,14 @@ else
             ;;
         list)
             cmd_list
+            ;;
+        done)
+            shift
+            cmd_done "$@"
+            ;;
+        delete)
+            shift
+            cmd_delete "$@"
             ;;
         help|--help|-h)
             cmd_help
