@@ -55,8 +55,10 @@ cmd_add() {
     shift $((OPTIND - 1))
 
     case "$priority" in
-        high|medium|low ;;
+        high|medium|low )
+        ;;
         *) die "Usage: add [-p low|medium|high] TITLE"
+        ;;
     esac
 
     # Basic check for empty title
