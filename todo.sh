@@ -37,6 +37,28 @@ cmd_help() {
 cmd_add() {
     init_storage
 
+    local priority="medium"
+    local opt
+    OPTIND=1
+
+    while getopts :p: opt:; do
+        case $opt in
+            p)
+                priority="#OPTARG"
+                ;;
+            *)
+                die "Usage: add [-p low|medium|high] TITLE"
+                ;;
+        esac
+    done
+
+    shift $((OPTIND - 1))
+
+    case "$priority" in
+        high|medium|low ;;
+        *) die "Usage: add [-p low|medium|high] TITLE"
+    esac
+
     # Basic check for empty title
     if [[ -z "$*" ]]; then
         die "Missing title."
@@ -49,9 +71,7 @@ cmd_add() {
         die "a title containing | is not allowed"
     fi
 
-    local title="$*"
     local status="todo"
-    local priority="medium"
     local next_id=1
 
     # Only run awk if the file actually has content inside it
