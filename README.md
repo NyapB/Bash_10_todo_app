@@ -69,12 +69,13 @@ Prints all tracking rows organized in clean, space-aligned columns. High-priorit
 - Syntax: ./todo.sh list (or invoke ./todo.sh without arguments)
 
 -Example:
-    ```bash
+
+```bash
     \$ ./todo.sh list
     ID   STATUS   PRIORITY  TITLE
     2    todo     high      Submit Day 9 fixes
     1    todo     medium    Read the awk chapter
-    ```
+```
 
 ### 4. done
 
@@ -94,10 +95,11 @@ Completely scrubs and drops a target line path row entirely from the underlying 
 
 Syntax: ./todo.sh delete ID
 Example:
-    ```bash
+
+```bash
     \$ ./todo.sh delete 1
     Task 1 deleted
-    ```
+```
 
 ---
 
