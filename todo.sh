@@ -97,12 +97,16 @@ cmd_list() {
     cat "$STORAGE_FILE"
 
 #print aligned headers
-printf "%-4s %-8s %-9s %s\n" "ID" "STATUS" "PRIOTITY" "TITLE"
+printf "%-4s %-8s %-9s %s\n" "ID" "STATUS" "PRIORITY" "TITLE"
 
-    #Read each pipe-separated line and format it cleanly
-    while IFS='|' read -r id status priority title; do
-        printf "%-4s %-8s %-9s %s\n" "$id" "$status" "$priority" "$title"
-    done < "$STORAGE_FILE"
+#
+awk -F'|' -v OFS='|' '{ p = ($3 == "high") ? 1 : ($3 == "medium") ? 2 : 3; print p, $0 }' "$STORAGE_FILE" |
+
+        sort -t '|' -k1,1n |
+        cut -d '|' -f2- |
+        while IFS='|' read -r id status priority title; do
+            printf "%-4s %-8s %-9s %s\n" "$id" "$status" "$priority" "$title"
+        done
 }
 
 cmd_done() {
