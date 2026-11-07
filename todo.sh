@@ -135,7 +135,7 @@ cmd_done() {
 
 cmd_delete() {
     init_storage
-    local target_id="$1"
+    local target_id="${1:-}"
 
     if [[ -z "$target_id" ]]; then
         die "Missing task ID."
