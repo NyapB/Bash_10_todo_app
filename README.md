@@ -5,9 +5,9 @@ A lightweight, terminal-native task management application designed for develope
 ## Features
 
 - Priority Sorting: Organizes tasks automatically by sorting high-priority items to the top.
-- Safe State Manipulation: Uses atomic operations with temporary files (`mv`) to update or purge items safely.
-- Robust Input Validation: Rejects delimiter injection (the `|` character) and invalid flag sequences.
-- Flexible Environment Overrides: Respects the `$TODO_FILE` environment variable configuration.
+- Safe State Manipulation: Uses atomic operations with temporary files (` mv `) to update or purge items safely.
+- Robust Input Validation: Rejects delimiter injection (the ` | ` character) and invalid flag sequences.
+- Flexible Environment Overrides: Respects the ` $TODO_FILE ` environment variable configuration.
 
 ---
 
@@ -29,9 +29,9 @@ A lightweight, terminal-native task management application designed for develope
 
 ## Subcommands & Usage
 
-### 1. `help` Displays the usage banner and command flags
+### 1. ` help ` Displays the usage banner and command flags
 
-- syntax:** `./todo.sh help` (or `--help`, `-h`)
+- syntax:** ` ./todo.sh help ` (or ` --help `, ` -h `)
 - Example:
 
     ```bash
@@ -46,11 +46,11 @@ A lightweight, terminal-native task management application designed for develope
       ./todo.sh help
     ```
 
-### 2. `add`
+### 2. ` add `
 
 Creates a new task. Assigns a status of `todo` and increments the ID automatically from the highest current record.
 
-- Syntax: `./todo.sh add [-p low|medium|high] TITLE`
+- Syntax: ` ./todo.sh add [-p low|medium|high] TITLE `
 
 - Examples:
 
@@ -62,11 +62,11 @@ Creates a new task. Assigns a status of `todo` and increments the ID automatical
     Added task 2
     ```
 
-### 3. `list`
+### 3. ` list `
 
 Prints all tracking rows organized in clean, space-aligned columns. **High-priority tasks always float to the top of the output table regardless of creation order.** If no entries exist, a friendly fallback notice is shown.
 
-- Syntax: `./todo.sh list` (or invoke `./todo.sh` without arguments)
+- Syntax: ` ./todo.sh list ` (or invoke ` ./todo.sh ` without arguments)
 
 -Example:
     ```bash
@@ -76,11 +76,11 @@ Prints all tracking rows organized in clean, space-aligned columns. **High-prior
     1    todo     medium    Read the awk chapter
     ```
 
-### 4. `done`
+### 4. ` done `
 
-Marks a specific task item as completed by swapping its internal status state string to `done`.
+Marks a specific task item as completed by swapping its internal status state string to ` done `.
 
-- Syntax: `./todo.sh done ID`
+- Syntax: ` ./todo.sh done ID `
 - Example:
 
     ```bash
@@ -88,11 +88,11 @@ Marks a specific task item as completed by swapping its internal status state st
     Task 1 done
     ```
 
-### 5. `delete`
+### 5. ` delete `
 
 Completely scrubs and drops a target line path row entirely from the underlying system storage.
 
-Syntax: `./todo.sh delete ID`
+Syntax: ` ./todo.sh delete ID `
 Example:
     ```bash
     \$ ./todo.sh delete 1
@@ -104,9 +104,9 @@ Example:
 ## Custom Database Storage Overrides
 
 By default, data saves inside the user workspace folder path:
-`~/.local/share/todo/todo.txt`
+` ~/.local/share/todo/todo.txt `
 
-To point data manipulation pipelines to an alternative sandbox environment dynamically, export the `$TODO_FILE` path sequence:
+To point data manipulation pipelines to an alternative sandbox environment dynamically, export the ` $TODO_FILE ` path sequence:
 
 ```bash
 export TODO_FILE="/tmp/my_test_todos.txt"
